@@ -1,0 +1,452 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GramUdyam AI API",
+    "version": "1.0.0",
+    "description": "Backend API for GramUdyam AI rural enterprise feasibility platform"
+  },
+  "paths": {
+    "/auth/guest": {
+      "post": {
+        "summary": "Create guest session",
+        "operationId": "createGuestSession",
+        "responses": {
+          "200": {
+            "description": "Guest session created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthGuestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/claim-guest-data": {
+      "post": {
+        "summary": "Claim guest data into authenticated user account",
+        "operationId": "claimGuestData",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClaimGuestDataRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Guest data claimed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimGuestDataResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized or token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "summary": "Get current user profile and account details",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "User details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user account and all personal data",
+        "operationId": "deleteAccount",
+        "responses": {
+          "200": {
+            "description": "Account deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/profile": {
+      "get": {
+        "summary": "Get user rural profile",
+        "operationId": "getUserProfile",
+        "responses": {
+          "200": {
+            "description": "User profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user rural profile",
+        "operationId": "updateUserProfile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserProfileData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports": {
+      "get": {
+        "summary": "Get saved reports for current user",
+        "operationId": "getReports",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user reports",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportsListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reports/{id}": {
+      "get": {
+        "summary": "Get report by id",
+        "operationId": "getReportById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedReportItem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete saved report",
+        "operationId": "deleteReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/sessions": {
+      "get": {
+        "summary": "Get past chat sessions",
+        "operationId": "getChatSessions",
+        "responses": {
+          "200": {
+            "description": "List of chat sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatSessionItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/sessions/{id}/messages": {
+      "get": {
+        "summary": "Get chat session messages",
+        "operationId": "getChatSessionMessages",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatMessageItem"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/sessions/{id}": {
+      "delete": {
+        "summary": "Delete chat session",
+        "operationId": "deleteChatSession",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat session deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiError": {
+        "type": "object",
+        "required": ["detail", "code"],
+        "properties": {
+          "detail": { "type": "string" },
+          "code": { "type": "string" }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "required": ["success"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        }
+      },
+      "AuthGuestResponse": {
+        "type": "object",
+        "required": ["access_token", "token_type", "guest_id", "expires_in"],
+        "properties": {
+          "access_token": { "type": "string" },
+          "token_type": { "type": "string", "default": "Bearer" },
+          "guest_id": { "type": "string" },
+          "expires_in": { "type": "integer" }
+        }
+      },
+      "ClaimGuestDataRequest": {
+        "type": "object",
+        "required": ["guest_token"],
+        "properties": {
+          "guest_token": { "type": "string" }
+        }
+      },
+      "ClaimGuestDataResponse": {
+        "type": "object",
+        "required": ["success", "claimed_reports_count"],
+        "properties": {
+          "success": { "type": "boolean" },
+          "claimed_reports_count": { "type": "integer" },
+          "message": { "type": "string" }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "required": ["id", "email"],
+        "properties": {
+          "id": { "type": "string" },
+          "email": { "type": "string" },
+          "name": { "type": "string" },
+          "avatar_url": { "type": "string" },
+          "is_guest": { "type": "boolean" },
+          "created_at": { "type": "string" }
+        }
+      },
+      "UserProfileData": {
+        "type": "object",
+        "properties": {
+          "state": { "type": "string" },
+          "district": { "type": "string" },
+          "village": { "type": "string" },
+          "capital": { "type": "number" },
+          "category": { "type": "string" },
+          "gender": { "type": "string" },
+          "age": { "type": "number" },
+          "experience": { "type": "string" },
+          "collateral": { "type": "boolean" },
+          "preferred_language": { "type": "string" }
+        }
+      },
+      "SavedReportItem": {
+        "type": "object",
+        "required": ["id", "created_at", "business_name", "verdict"],
+        "properties": {
+          "id": { "type": "string" },
+          "created_at": { "type": "string" },
+          "business_name": { "type": "string" },
+          "business_type": { "type": "string" },
+          "district": { "type": "string" },
+          "investment": { "type": "number" },
+          "monthly_income": { "type": "number" },
+          "verdict": {
+            "type": "object",
+            "required": ["label", "score", "summary"],
+            "properties": {
+              "label": { "type": "string" },
+              "score": { "type": "number" },
+              "summary": { "type": "string" }
+            }
+          },
+          "report_data": { "type": "object" }
+        }
+      },
+      "ReportsListResponse": {
+        "type": "object",
+        "required": ["reports", "total", "page", "limit"],
+        "properties": {
+          "reports": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SavedReportItem" }
+          },
+          "total": { "type": "integer" },
+          "page": { "type": "integer" },
+          "limit": { "type": "integer" }
+        }
+      },
+      "ChatSessionItem": {
+        "type": "object",
+        "required": ["id", "title", "updated_at"],
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "created_at": { "type": "string" },
+          "updated_at": { "type": "string" }
+        }
+      },
+      "ChatMessageItem": {
+        "type": "object",
+        "required": ["id", "role", "content", "timestamp"],
+        "properties": {
+          "id": { "type": "string" },
+          "role": { "type": "string", "enum": ["user", "advisor"] },
+          "content": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+
