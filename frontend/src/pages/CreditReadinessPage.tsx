@@ -48,9 +48,9 @@ export const CreditReadinessPage: React.FC = () => {
         "Add a co-applicant with an existing operational savings account",
       ],
       actions: [
-        { days: "30 Days", text: "Maintain steady weekly dairy milk deposits into your Jan Dhan / Savings account." },
+        { days: "30 Days", text: "Maintain steady weekly revenue deposits into your savings or current bank account." },
         { days: "60 Days", text: "Ensure utility (electricity/water) receipts are in your or immediate family's name." },
-        { days: "90 Days", text: "Apply for a Kisan Credit Card (KCC) for animal husbandry to establish credit track." },
+        { days: "90 Days", text: "Complete free Udyam registration online to establish formal micro-enterprise identity." },
       ],
     },
     strong: {

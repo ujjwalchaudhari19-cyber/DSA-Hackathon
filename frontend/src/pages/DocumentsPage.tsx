@@ -44,9 +44,24 @@ export const DocumentsPage: React.FC = () => {
   const [applicantCategory, setApplicantCategory] = useState<SocialCategory>(
     (profile.category === "sc" || profile.category === "st") ? "sc_st" : profile.category === "obc" ? "obc" : profile.gender === "f" ? "woman" : "general"
   )
-  const [sector, setSector] = useState<SectorType>(
-    "dairy"
-  )
+  const defaultSector: SectorType = useMemo(() => {
+    const bt = (idea?.business_type || "").toLowerCase()
+    if (bt.includes("flour") || bt.includes("spice") || bt.includes("mill") || bt.includes("food") || bt.includes("tiffin") || bt.includes("mushroom")) {
+      return "processing"
+    }
+    if (bt.includes("manufacturing") || bt.includes("fabrication")) {
+      return "manufacturing"
+    }
+    if (bt.includes("repair") || bt.includes("tailor") || bt.includes("csc") || bt.includes("kirana") || bt.includes("store") || bt.includes("services")) {
+      return "services"
+    }
+    if (bt.includes("dairy") || bt.includes("cow") || bt.includes("cattle") || bt.includes("goat") || bt.includes("poultry")) {
+      return "dairy"
+    }
+    return "processing"
+  }, [idea?.business_type])
+
+  const [sector, setSector] = useState<SectorType>(defaultSector)
   const [customSectorName, setCustomSectorName] = useState<string>("")
 
   // Has generated checklist
@@ -60,7 +75,7 @@ export const DocumentsPage: React.FC = () => {
   const [checkedMap, setCheckedMap] = useState<Record<string, boolean>>({
     aadhaar_pan: true,
     udyam: true,
-    dairy_card: true,
+    dairy_card: defaultSector === "dairy",
   })
 
   // Multilingual labels for form & UI

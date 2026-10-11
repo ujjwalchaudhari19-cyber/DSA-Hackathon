@@ -37,6 +37,63 @@ from app.schemas.models import (
 
 logger = logging.getLogger(__name__)
 
+# Business type name normalization map
+_BUSINESS_TYPE_ALIASES: dict[str, str] = {
+    "dairy_small": "dairy_small",
+    "dairy": "dairy_small",
+    "milk": "dairy_small",
+    "cow": "dairy_small",
+    "kirana_store": "kirana_store",
+    "kirana": "kirana_store",
+    "general_store": "kirana_store",
+    "grocery": "kirana_store",
+    "tailoring": "tailoring",
+    "boutique": "tailoring",
+    "stitching": "tailoring",
+    "poultry_farming": "poultry_farming",
+    "poultry": "poultry_farming",
+    "chicken": "poultry_farming",
+    "goat_farming": "goat_farming",
+    "goat": "goat_farming",
+    "mobile_repair": "mobile_repair",
+    "mobile": "mobile_repair",
+    "electronics": "mobile_repair",
+    "flour_spice_mill": "flour_spice_mill",
+    "flour_mill": "flour_spice_mill",
+    "flour": "flour_spice_mill",
+    "spice": "flour_spice_mill",
+    "mill": "flour_spice_mill",
+    "mini flour and spice mill": "flour_spice_mill",
+    "tiffin_food_stall": "tiffin_food_stall",
+    "tiffin": "tiffin_food_stall",
+    "food_stall": "tiffin_food_stall",
+    "food": "tiffin_food_stall",
+    "mushroom_farming": "mushroom_farming",
+    "mushroom": "mushroom_farming",
+    "csc_eseva_center": "csc_eseva_center",
+    "csc": "csc_eseva_center",
+    "eseva": "csc_eseva_center",
+    "commercial_transport": "commercial_transport",
+    "truck": "commercial_transport",
+    "trucking": "commercial_transport",
+    "transport": "commercial_transport",
+    "logistics": "commercial_transport",
+    "freight": "commercial_transport",
+    "vehicle": "commercial_transport",
+    "tempo": "commercial_transport",
+}
+
+def _normalize_business_type(raw: str) -> str:
+    """Normalize a business type string to a canonical business ID."""
+    cleaned = raw.strip().lower().replace("-", "_")
+    if cleaned in _BUSINESS_TYPE_ALIASES:
+        return _BUSINESS_TYPE_ALIASES[cleaned]
+    # Fuzzy partial match
+    for keyword, canonical in _BUSINESS_TYPE_ALIASES.items():
+        if keyword in cleaned or cleaned in keyword:
+            return canonical
+    return cleaned  # Return as-is if no match
+
 # ========== In-memory report store (placeholder for DB) ==========
 _report_store: dict[str, FeasibilityReport] = {}
 
@@ -117,65 +174,151 @@ async def catalogue_filter(answers: DiscoveryAnswers) -> list[Business]:
 # ========== Local Market ==========
 async def local_market_get(district: str, business_type: str) -> LocalData:
     """Get local market data for a district + business type."""
-    # Default: Nashik district, dairy business (demo persona)
-    return LocalData(
-        district=district,
-        business_type=business_type,
-        population_band="50,000 - 1,00,000",
-        nearest_market="Nashik City",
-        distance_to_market_km=15.0,
-        competitor_count=8,
-        competitor_density="medium",
-        avg_selling_price=32.0,  # per litre of milk
-        demand_level="high",
-        seasonal_notes="Demand peaks in winter (Oct-Feb). Summer months see slight dip due to heat stress on cattle.",
-        input_availability="easy",
-        confidence="medium",
-        market_score=72.0,
-        risks=[
-            {"name": "Seasonal price fluctuation", "severity": "medium", "score": 35},
-            {"name": "Feed cost volatility", "severity": "medium", "score": 40},
-            {"name": "Disease outbreak risk", "severity": "high", "score": 25},
+    from app.services.local_market_service import get_local_market as _get_real_market
+    from app.services.data_store import business_by_id
+
+    canonical_id = _normalize_business_type(business_type)
+    if canonical_id == "commercial_transport":
+        return LocalData(
+            district=district,
+            business_type="commercial_transport",
+            population_band="tier-3 / regional transport hub",
+            nearest_market=f"{district.title()} APMC & Transport Nagar",
+            distance_to_market_km=12.0,
+            competitor_count=7,
+            competitor_density="medium",
+            avg_selling_price=45.0,
+            demand_level="high",
+            seasonal_notes="Freight movement peaks during agricultural harvest seasons (March-May & Oct-Jan) and infrastructure construction cycles.",
+            input_availability="easy",
+            confidence="high",
+            market_score=78.0,
+            risks=[
+                {"name": "Diesel price volatility & toll rate adjustments", "severity": "medium", "score": 38},
+                {"name": "Vehicle preventive maintenance & tyre replacement cycles", "severity": "medium", "score": 32},
+            ],
+        )
+
+    try:
+        op2_data = _get_real_market(district, canonical_id)
+        # Build risk list from risk_severity
+        risk_severity = getattr(op2_data, 'risk_severity', 35)
+        try:
+            biz = business_by_id(canonical_id)
+            biz_name = biz.get("name", canonical_id.replace("_", " ").title())
+        except Exception:
+            biz_name = canonical_id.replace("_", " ").title()
+
+        risks = [
+            {"name": f"Market competition in {biz_name}", "severity": "medium" if risk_severity < 35 else "high", "score": int(risk_severity)},
+            {"name": "Seasonal demand fluctuation", "severity": "medium", "score": int(risk_severity * 0.8)},
         ]
-    )
+
+        return LocalData(
+            district=district,
+            business_type=canonical_id,
+            population_band=op2_data.population_band or "rural",
+            nearest_market=op2_data.nearest_market or district.title() + " Market",
+            distance_to_market_km=op2_data.distance_km or 15.0,
+            competitor_count=op2_data.competitor_count,
+            competitor_density=op2_data.competitor_density if op2_data.competitor_density in ("low", "medium", "high") else "medium",
+            avg_selling_price=op2_data.avg_selling_price,
+            demand_level=op2_data.demand_level if op2_data.demand_level in ("low", "moderate", "high", "very_high") else "moderate",
+            seasonal_notes=op2_data.seasonal_notes,
+            input_availability=op2_data.input_availability if op2_data.input_availability in ("easy", "moderate", "difficult") else "moderate",
+            confidence=op2_data.confidence,
+            market_score=op2_data.market_score,
+            risks=risks,
+        )
+    except Exception as e:
+        logger.warning("Real local_market_service failed for %s/%s, using fallback: %s", district, business_type, e)
+        # Fallback: return generic data with the correct business_type
+        return LocalData(
+            district=district,
+            business_type=canonical_id,
+            population_band="50,000 - 1,00,000",
+            nearest_market=district.title() + " City",
+            distance_to_market_km=15.0,
+            competitor_count=5,
+            competitor_density="medium",
+            avg_selling_price=100.0,
+            demand_level="moderate",
+            seasonal_notes="Seasonal patterns vary by business type.",
+            input_availability="moderate",
+            confidence="approximate",
+            market_score=60.0,
+            risks=[
+                {"name": "Market uncertainty", "severity": "medium", "score": 35},
+                {"name": "Input cost volatility", "severity": "medium", "score": 30},
+            ]
+        )
 
 
 # ========== Investment Estimate ==========
 async def investment_estimate(idea: Idea, local: LocalData | None) -> Investment:
     """Estimate itemised investment for a business idea."""
-    # Dairy small unit (demo)
-    if idea.business_type == "dairy_small" or "dairy" in idea.business_type.lower():
+    from app.services.data_store import business_by_id
+
+    canonical_id = _normalize_business_type(idea.business_type)
+    scale = getattr(idea, 'scale', 'small')
+    if hasattr(scale, 'value'):
+        scale = scale.value
+    scale = scale if scale in ('small', 'medium', 'large') else 'small'
+
+    if canonical_id == "commercial_transport":
         items = [
-            CostItem(item="Cattle (HF/Jersey cross)", unit="per animal", unit_cost=45000, quantity=4, total=180000),
-            CostItem(item="Cattle shed construction", unit="lump sum", unit_cost=35000, quantity=1, total=35000),
-            CostItem(item="Milking equipment & utensils", unit="set", unit_cost=8000, quantity=1, total=8000),
-            CostItem(item="Fodder storage", unit="lump sum", unit_cost=5000, quantity=1, total=5000),
-            CostItem(item="Milk cans & cooling", unit="set", unit_cost=12000, quantity=1, total=12000),
-            CostItem(item="Working capital (3 months)", unit="lump sum", unit_cost=30000, quantity=1, total=30000),
+            CostItem(item="Commercial Transport Vehicle (Down payment / asset purchase)", unit="vehicle", unit_cost=320000, quantity=1, total=320000),
+            CostItem(item="Commercial Permit, RTO Registration & Insurance", unit="lump sum", unit_cost=45000, quantity=1, total=45000),
+            CostItem(item="Working Capital for Fuel, Toll & Maintenance (2 months)", unit="month", unit_cost=25000, quantity=2, total=50000),
         ]
         subtotal = sum(i.total for i in items)
         contingency = round(subtotal * 0.10)
         total = subtotal + contingency
-        working_capital = 30000
-        fixed = total - working_capital - contingency
         return Investment(
-            items=items, fixed_cost=fixed,
-            working_capital=working_capital, contingency=contingency, total=total
+            items=items, fixed_cost=365000,
+            working_capital=50000, contingency=contingency, total=total
         )
 
-    # Generic fallback
-    items = [
-        CostItem(item="Equipment & setup", unit="lump sum", unit_cost=50000, quantity=1, total=50000),
-        CostItem(item="Initial inventory / raw material", unit="lump sum", unit_cost=20000, quantity=1, total=20000),
-        CostItem(item="Working capital (3 months)", unit="lump sum", unit_cost=15000, quantity=1, total=15000),
-    ]
-    subtotal = sum(i.total for i in items)
-    contingency = round(subtotal * 0.10)
-    total = subtotal + contingency
-    return Investment(
-        items=items, fixed_cost=50000,
-        working_capital=15000, contingency=contingency, total=total
-    )
+    try:
+        biz = business_by_id(canonical_id)
+        items = []
+        for template in biz["cost_template"]:
+            qty = template["qty_by_scale"].get(scale, template["qty_by_scale"].get("small", 1))
+            unit_cost = template["unit_cost"]
+            total = unit_cost * qty
+            items.append(CostItem(
+                item=template["item"],
+                unit=template.get("unit", "lump sum"),
+                unit_cost=unit_cost,
+                quantity=qty,
+                total=total,
+            ))
+
+        subtotal = sum(i.total for i in items)
+        contingency = round(subtotal * 0.10)
+        # Separate fixed from working capital
+        fixed = sum(i.total for i, t in zip(items, biz["cost_template"]) if t.get("category") == "fixed")
+        working = sum(i.total for i, t in zip(items, biz["cost_template"]) if t.get("category") == "working_capital")
+        total = subtotal + contingency
+        return Investment(
+            items=items, fixed_cost=fixed,
+            working_capital=working, contingency=contingency, total=total
+        )
+    except Exception as e:
+        logger.warning("business_by_id failed for %s, using generic fallback: %s", canonical_id, e)
+        # Generic fallback
+        items = [
+            CostItem(item="Equipment & setup", unit="lump sum", unit_cost=50000, quantity=1, total=50000),
+            CostItem(item="Initial inventory / raw material", unit="lump sum", unit_cost=20000, quantity=1, total=20000),
+            CostItem(item="Working capital (3 months)", unit="lump sum", unit_cost=15000, quantity=1, total=15000),
+        ]
+        subtotal = sum(i.total for i in items)
+        contingency = round(subtotal * 0.10)
+        total = subtotal + contingency
+        return Investment(
+            items=items, fixed_cost=50000,
+            working_capital=15000, contingency=contingency, total=total
+        )
 
 
 # ========== Funding Gap ==========
@@ -303,7 +446,7 @@ async def schemes_match(profile: Profile, gap: float, idea: Idea) -> list[Scheme
     ))
 
     # PM-FME (for food processing)
-    if idea.business_type in ["tiffin_stall", "flour_mill"] or "food" in idea.business_type.lower():
+    if _normalize_business_type(idea.business_type) in ["tiffin_food_stall", "flour_spice_mill", "dairy_small"] or "food" in idea.business_type.lower():
         schemes.append(SchemeMatch(
             scheme_id="pm_fme",
             scheme_name="PM Formalisation of Micro Food Processing Enterprises (PM-FME)",
@@ -321,6 +464,25 @@ async def schemes_match(profile: Profile, gap: float, idea: Idea) -> list[Scheme
             source_url="https://pmfme.mofpi.gov.in/"
         ))
 
+    # Commercial Transport / Vehicle Financing
+    if canonical_id == "commercial_transport":
+        schemes.append(SchemeMatch(
+            scheme_id="mudra_tarun_transport",
+            scheme_name="Pradhan Mantri Mudra Yojana (Tarun) - Commercial Transport",
+            eligible=EligibilityStatus.YES,
+            reasons=["Commercial vehicle purchase under Mudra Tarun category", "Collateral-free priority sector loan"],
+            max_loan=1000000,
+            subsidy_pct=0,
+            interest_range="8.5-10.5%",
+            collateral_required=False,
+            how_to_apply=[
+                "Apply at commercial bank or regional rural bank with vehicle quotation",
+                "Submit commercial driving license and route plan",
+                "Apply via Udyam Mitra portal"
+            ],
+            source_url="https://www.mudra.org.in/"
+        ))
+
     return schemes
 
 
@@ -329,29 +491,42 @@ async def finance_projection(
     idea: Idea, local: LocalData, investment: Investment
 ) -> Projection:
     """Generate 12-month financial projection."""
-    # Dairy defaults
-    seasonality = [1.0, 1.0, 1.0, 0.9, 0.9, 0.9, 1.0, 1.0, 1.1, 1.1, 1.1, 1.0]
-    base_monthly_revenue = 4 * 10 * 30 * 32  # 4 cows × 10L/day × 30 days × ₹32/L = ₹38,400
-    variable_cost_pct = 0.45
-    fixed_opex = 8000  # monthly: feed supplements, vet, misc
+    from app.services.data_store import business_by_id
 
-    if "kirana" in idea.business_type.lower() or "store" in idea.business_type.lower():
-        base_monthly_revenue = 60000
-        variable_cost_pct = 0.75
-        fixed_opex = 5000
-        seasonality = [1.0]*12
-    elif "tailoring" in idea.business_type.lower():
-        base_monthly_revenue = 25000
-        variable_cost_pct = 0.30
-        fixed_opex = 3000
-        seasonality = [0.8, 0.9, 1.0, 1.1, 1.2, 0.9, 0.8, 0.8, 1.0, 1.3, 1.3, 1.0]
+    canonical_id = _normalize_business_type(idea.business_type)
+    scale = getattr(idea, 'scale', 'small')
+    if hasattr(scale, 'value'):
+        scale = scale.value
+    scale = scale if scale in ('small', 'medium', 'large') else 'small'
+
+    if canonical_id == "commercial_transport":
+        # Realistic rural commercial vehicle economics: 16 trips/mo * 120 km * ₹45/km = ~₹86,400 monthly revenue
+        base_monthly_revenue = 85000 if scale == "small" else (140000 if scale == "medium" else 220000)
+        variable_cost_pct = 0.52  # diesel, tolls, tyre wear
+        fixed_opex = 7500  # insurance, permit amortisation, routine service
+        seasonality = [0.95, 1.0, 1.15, 1.2, 1.1, 0.85, 0.8, 0.85, 0.95, 1.1, 1.2, 1.15]
+    else:
+        try:
+            biz = business_by_id(canonical_id)
+            model = biz["revenue_model"]
+            seasonality = biz.get("seasonality", [1.0]*12)
+            base_monthly_revenue = model["unit_price"] * model["units_per_month_by_scale"].get(scale, model["units_per_month_by_scale"].get("small", 50000))
+            variable_cost_pct = model["variable_cost_pct"]
+            fixed_opex = model["fixed_opex_monthly"]
+        except Exception as e:
+            logger.warning("business_by_id failed for projection %s, using generic: %s", canonical_id, e)
+            seasonality = [1.0]*12
+            base_monthly_revenue = 40000
+            variable_cost_pct = 0.45
+            fixed_opex = 5000
 
     monthly = []
     cumulative = 0
     break_even_month = None
 
     for m in range(12):
-        revenue = round(base_monthly_revenue * seasonality[m])
+        sf = seasonality[m] if m < len(seasonality) else 1.0
+        revenue = round(base_monthly_revenue * sf)
         var_cost = round(revenue * variable_cost_pct)
         net = revenue - var_cost - fixed_opex
         cumulative += net

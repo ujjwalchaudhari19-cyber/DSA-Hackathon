@@ -31,6 +31,7 @@ class AnalysisService:
             lang=lang.value,
             max_tokens=2048
         )
+        result.local_data = local_data
         return result
 
 

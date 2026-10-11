@@ -610,6 +610,9 @@ class LocalAnalysisNarrative(BaseModel):
     seasonal_insights: str = Field(
         "", description="Seasonal patterns or insights"
     )
+    local_data: LocalData | None = Field(
+        None, description="Quantitative market data from Op 2"
+    )
 
 
 class ReportNarrative(BaseModel):

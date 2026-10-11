@@ -1,4 +1,5 @@
 export interface Profile {
+  name?: string
   state: string
   district: string
   village?: string
@@ -8,6 +9,7 @@ export interface Profile {
   age: number
   experience: 'none' | 'some' | 'experienced'
   collateral?: boolean
+  first_time_borrower?: boolean
 }
 
 export interface Discovery {
@@ -25,6 +27,7 @@ export interface BusinessIdea {
   business_type: string
   scale: string
   details: string
+  products?: string[]
   product_list?: string[]
   target_customer?: string
 }
@@ -39,58 +42,72 @@ export interface BusinessSuggestion {
 }
 
 export interface InvestmentItem {
-  name: string
-  qty: number
+  name?: string
+  item?: string
+  qty?: number
+  quantity?: number
   unit_cost: number
   total: number
+  category?: string
+  isCustom?: boolean
 }
 
 export interface Investment {
   total: number
-  fixed: number
+  fixed?: number
+  fixed_cost?: number
   working_capital: number
   items: InvestmentItem[]
 }
 
 export interface FundingGap {
-  capital: number
+  capital?: number
+  available_capital?: number
   gap: number
   capital_ratio: number
+  total_investment?: number
 }
 
 export interface Scheme {
-  id: string
-  name: string
-  type: string
-  agency: string
-  eligible: 'yes' | 'no' | 'maybe'
+  id?: string
+  scheme_id?: string
+  name?: string
+  scheme_name?: string
+  type?: string
+  agency?: string
+  eligible: 'yes' | 'no' | 'maybe' | any
   reasons: string[]
-  benefits: string
-  interest_range: string
+  benefits?: string
+  interest_range?: string
   subsidy?: string
   collateral?: string
-  how_to_apply: string[]
-  source_url: string
-  last_verified: string
+  how_to_apply?: string[]
+  source_url?: string
+  last_verified?: string
 }
 
 export interface Repayment {
-  loan: number
-  rate: number
-  tenure: number
+  loan?: number
+  loan_amount?: number
+  rate?: number
+  annual_rate_pct?: number
+  tenure?: number
+  tenure_months?: number
   emi: number
   total_interest: number
   dscr: number
   affordable: boolean
-  schedule: AmortRow[]
+  schedule: any[]
 }
 
 export interface AmortRow {
   month: number
-  emi: number
+  emi?: number
+  payment?: number
   interest: number
   principal: number
-  balance: number
+  balance?: number
+  closing_balance?: number
 }
 
 export interface MarketAnalysis {
@@ -110,13 +127,17 @@ export interface Risk {
 
 export interface CreditReadiness {
   bucket: 'strong' | 'fair' | 'thin_file' | 'needs_repair'
-  actions: string[]
+  actions: any[]
   alternatives: string[]
 }
 
 export interface Projection {
-  monthly: number[]
-  break_even_months: number
+  monthly: any[]
+  break_even_months?: number | null
+  break_even_month?: number | null
+  break_even_note?: string
+  annual_revenue?: number
+  annual_net_profit?: number
 }
 
 export interface Verdict {
@@ -126,18 +147,24 @@ export interface Verdict {
 }
 
 export interface FeasibilityReport {
-  id: string
-  verdict: Verdict
-  market: MarketAnalysis
-  investment: Investment
-  funding: FundingGap
-  schemes: Scheme[]
-  repayment: Repayment
-  projection: Projection
-  credit: CreditReadiness
-  recommendations: string[]
-  next_steps: string[]
-  disclaimer: string
+  id?: string
+  report_id?: string
+  verdict?: Verdict
+  score?: any
+  market?: MarketAnalysis
+  local_data?: any
+  investment?: Investment
+  funding?: FundingGap
+  gap?: FundingGap
+  schemes?: Scheme[]
+  repayment?: Repayment
+  projection?: Projection
+  credit?: CreditReadiness
+  recommendations?: string[]
+  next_steps?: string[]
+  disclaimer?: string
+  narrative?: any
+  idea?: any
 }
 
 export interface DocumentItem {
@@ -157,8 +184,10 @@ export interface Supplier {
   products: string[]
   contact: string
   price_band: string
-  moq: string
+  moq: string | number
   rating?: number
+  distance_km?: number
+  is_demo?: boolean
 }
 
 export type Lang = 'en' | 'hi' | 'mr'

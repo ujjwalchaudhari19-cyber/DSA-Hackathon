@@ -77,14 +77,65 @@ def _idea_normalize_fallback(variables: dict, schema: type[BaseModel]) -> BaseMo
 
 
 def _local_analysis_fallback(variables: dict, schema: type[BaseModel]) -> BaseModel:
-    return schema.model_validate({
-        "demand_summary": "Local market analysis data is available in the detailed report sections.",
-        "customer_segments": ["Local residents", "Nearby town customers"],
-        "competitor_summary": "Competitor information has been collected from local data sources.",
-        "opportunities": ["Growing local demand", "Limited current competition"],
-        "risks": [{"name": "Market uncertainty", "severity": "medium", "mitigation": "Start at smaller scale and expand gradually"}],
-        "seasonal_insights": "Seasonal patterns may affect your business. Plan inventory accordingly."
-    })
+    raw_bt = str(variables.get("business_type", "")).lower()
+    
+    if any(k in raw_bt for k in ["truck", "transport", "freight", "vehicle", "logistics", "tempo"]):
+        return schema.model_validate({
+            "demand_summary": "High demand for agricultural produce and commercial goods transport connecting rural mandis with regional market hubs.",
+            "customer_segments": ["Mandi grain & vegetable merchants", "Fertilizer & seed distributors", "Local construction contractors", "Regional FMCG stockists"],
+            "competitor_summary": "Local transport operators are largely individual vehicle owners lacking scheduled trip management, digital dispatching, and GPS tracking.",
+            "opportunities": ["Direct annual haulage contracts with Farmer Producer Organizations (FPOs)", "Return-trip cargo load booking to eliminate deadhead runs", "Mudra Tarun / Stand-Up India commercial vehicle financing support"],
+            "risks": [
+                {"name": "Diesel price volatility", "severity": "medium", "mitigation": "Incorporate fuel index escalation clauses into freight contracts"},
+                {"name": "Preventive maintenance & tyre wear", "severity": "medium", "mitigation": "Follow regular OEM servicing intervals and maintain working capital reserve"}
+            ],
+            "seasonal_insights": "Peak freight haulage demand occurs during post-harvest marketing months (March-May and Oct-Jan) and infrastructure construction cycles."
+        })
+    elif any(k in raw_bt for k in ["flour", "mill", "spice"]):
+        return schema.model_validate({
+            "demand_summary": "Consistent household demand for custom wheat/grain milling and packaged spice grinding across village clusters.",
+            "customer_segments": ["Rural households", "Local sweet shops and eateries", "Weekly haat customers"],
+            "competitor_summary": "Existing mills rely on outdated single-purpose machines with slow turnaround times.",
+            "opportunities": ["Adding spice pulverizer to capture high-margin turmeric and chilli processing", "PM-FME 35% credit-linked capital subsidy"],
+            "risks": [
+                {"name": "3-phase power supply interruptions", "severity": "medium", "mitigation": "Install heavy-duty generator or solar backup system"}
+            ],
+            "seasonal_insights": "Highest demand during wheat harvest (March-May) and festive seasons (Oct-Dec)."
+        })
+    elif any(k in raw_bt for k in ["kirana", "grocery", "general"]):
+        return schema.model_validate({
+            "demand_summary": "Year-round daily consumption demand for FMCG, packaged foods, and household essentials.",
+            "customer_segments": ["Local village households", "Agricultural laborers", "Commuters"],
+            "competitor_summary": "Traditional shops suffer from stock-outs, cluttered layouts, and lack of digital payment options.",
+            "opportunities": ["Distributor direct sourcing for 3-5% margin improvement", "Home delivery and digital UPI enablement"],
+            "risks": [
+                {"name": "Credit sales (udhari) non-recovery", "severity": "medium", "mitigation": "Set strict 15% cap on credit sales and maintain digital ledger"}
+            ],
+            "seasonal_insights": "Sales surge during festival seasons (Diwali, Holi) and harvest liquidation periods."
+        })
+    elif any(k in raw_bt for k in ["dairy", "milk", "cattle", "cow"]):
+        return schema.model_validate({
+            "demand_summary": "Guaranteed daily off-take by village dairy cooperative societies and steady local household demand.",
+            "customer_segments": ["Dairy cooperative chilling centers", "Local sweet vendors & tea stalls", "Neighborhood families"],
+            "competitor_summary": "Small unorganized producers with 1-2 cows lacking scientific fodder management.",
+            "opportunities": ["Value addition through curd, paneer, and ghee", "Mudra / KCC subsidized livestock credit"],
+            "risks": [
+                {"name": "Dry fodder and feed price volatility", "severity": "medium", "mitigation": "Store seasonal silage and cultivate green fodder"}
+            ],
+            "seasonal_insights": "Milk yield peaks in winter (flush season); pricing firms up during summer (lean season)."
+        })
+    else:
+        title = raw_bt.replace("_", " ").title() if raw_bt else "Enterprise"
+        return schema.model_validate({
+            "demand_summary": f"Growing local demand for quality {title} products and services in the target district.",
+            "customer_segments": [f"Local residents & consumers seeking {title}", "Nearby village catchment clusters", "Local retail and trade buyers"],
+            "competitor_summary": "Local competitors are unorganized with standard offerings, leaving substantial room for modern customer service.",
+            "opportunities": [f"First-mover advantage in organized {title} offerings", "PMEGP / Mudra collateral-free government credit support"],
+            "risks": [
+                {"name": "Working capital fluctuations", "severity": "medium", "mitigation": "Maintain a 3-month operational cash reserve"}
+            ],
+            "seasonal_insights": "Demand increases during festival periods, harvest celebrations, and regional market days."
+        })
 
 
 def _compare_fallback(variables: dict, schema: type[BaseModel]) -> BaseModel:

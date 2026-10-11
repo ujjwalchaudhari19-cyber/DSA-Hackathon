@@ -133,6 +133,31 @@ export interface DiscoverRequest {
 export const discoverSuggest = (payload: DiscoverRequest) =>
   api.post<BusinessSuggestion[]>('/discover/suggest', payload).then((r) => r.data)
 
+export interface CatalogueBusiness {
+  id: string
+  name: string
+  sector: string
+  min_investment: number
+  max_investment: number
+  space_needed: string
+  skills: string[]
+  time: string
+  required_docs_key: string
+}
+
+export const getCatalogue = () =>
+  api.get<CatalogueBusiness[]>('/catalogue').then((r) => r.data)
+
+export const filterCatalogue = (answers: {
+  interests?: string[]
+  budget_range?: [number, number]
+  space?: string
+  skills?: string[]
+  time?: string
+  location_type?: string
+}) => api.post<CatalogueBusiness[]>('/catalogue/filter', answers).then((r) => r.data)
+
+
 // --- Idea ---
 export const normalizeIdea = (raw: string, lang: string) =>
   api.post<BusinessIdea>('/idea/normalize', { raw, lang }).then((r) => r.data)
@@ -214,6 +239,12 @@ export const getSuppliers = (params: {
   district?: string
   price_band?: string
 }) => api.get<Supplier[]>('/suppliers', { params }).then((r) => r.data)
+
+export const submitSupplierLead = (
+  supplierId: string,
+  data: { requester_name: string; phone: string; message: string }
+) => api.post<{ lead_id: number | string; status: string }>(`/suppliers/${supplierId}/lead`, data).then((r) => r.data)
+
 
 // --- Advisor ---
 export const advisorChat = (
