@@ -1,0 +1,72 @@
+{
+  "source": "Clearly labelled demo/local-market seed data for prototype use; not a substitute for a market survey.",
+  "last_verified": "2026-10-11",
+  "districts": {
+    "nashik": {
+      "price_factor": 1.03,
+      "population_band": "tier-3 / rural agri-hub (district pop ~6.1M)",
+      "nearest_market": "Nashik APMC & Yeola Mandi",
+      "distance_km": 14.5,
+      "businesses": {
+        "dairy_small": {"market_score": 78, "risk_severity": 32, "confidence": "high", "demand_level": "high", "competitor_count": 8, "competitor_density": "medium", "avg_selling_price": 50, "seasonal_notes": "Consistent year-round demand with dairy cooperative procurement centres nearby.", "input_availability": "abundant"},
+        "kirana_store": {"market_score": 64, "risk_severity": 40, "confidence": "medium", "demand_level": "moderate", "competitor_count": 14, "competitor_density": "high", "avg_selling_price": 1, "seasonal_notes": "Harvest festival spikes in October to January.", "input_availability": "abundant"},
+        "tailoring": {"market_score": 69, "risk_severity": 35, "confidence": "medium", "demand_level": "moderate", "competitor_count": 6, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Peak demand during wedding and festive seasons (Nov-Feb).", "input_availability": "abundant"},
+        "poultry_farming": {"market_score": 75, "risk_severity": 38, "confidence": "high", "demand_level": "high", "competitor_count": 5, "competitor_density": "medium", "avg_selling_price": 115, "seasonal_notes": "Demand increases during winter and festival gatherings.", "input_availability": "abundant"},
+        "goat_farming": {"market_score": 80, "risk_severity": 28, "confidence": "high", "demand_level": "high", "competitor_count": 4, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "High festive demand and weekly cattle/goat market access in Malegaon/Yeola.", "input_availability": "abundant"},
+        "mobile_repair": {"market_score": 72, "risk_severity": 34, "confidence": "medium", "demand_level": "growing", "competitor_count": 5, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Steady digital usage; replacement screens and battery swaps in high demand.", "input_availability": "moderate"},
+        "flour_spice_mill": {"market_score": 76, "risk_severity": 30, "confidence": "high", "demand_level": "high", "competitor_count": 4, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Spike during wheat harvest (March-May) and chilli pounding (Nov-Jan).", "input_availability": "abundant"},
+        "tiffin_food_stall": {"market_score": 70, "risk_severity": 36, "confidence": "medium", "demand_level": "growing", "competitor_count": 7, "competitor_density": "medium", "avg_selling_price": 75, "seasonal_notes": "Daily commuter and market-day patronage.", "input_availability": "abundant"},
+        "mushroom_farming": {"market_score": 73, "risk_severity": 39, "confidence": "medium", "demand_level": "growing", "competitor_count": 2, "competitor_density": "low", "avg_selling_price": 145, "seasonal_notes": "Hot summer months require active misting; strong restaurant demand.", "input_availability": "moderate"},
+        "csc_eseva_center": {"market_score": 82, "risk_severity": 24, "confidence": "high", "demand_level": "high", "competitor_count": 3, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Peaks during DBT welfare schemes, crop insurance windows, and exam seasons.", "input_availability": "abundant"}
+      }
+    },
+    "pune": {
+      "price_factor": 1.10,
+      "population_band": "peri-urban / fast-growing industrial belt (district pop ~9.4M)",
+      "nearest_market": "Manchar & Shirur Market Yards",
+      "distance_km": 18.0,
+      "businesses": {
+        "dairy_small": {"market_score": 68, "risk_severity": 40, "confidence": "medium", "demand_level": "moderate", "competitor_count": 12, "competitor_density": "high", "avg_selling_price": 54, "seasonal_notes": "Good urban consumer margin but higher feed and fodder costs.", "input_availability": "moderate"},
+        "kirana_store": {"market_score": 74, "risk_severity": 34, "confidence": "high", "demand_level": "high", "competitor_count": 18, "competitor_density": "high", "avg_selling_price": 1, "seasonal_notes": "Dense migrant labour and industrial worker footfall.", "input_availability": "abundant"},
+        "tailoring": {"market_score": 75, "risk_severity": 30, "confidence": "high", "demand_level": "high", "competitor_count": 9, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Strong custom boutique and school/factory uniform demand.", "input_availability": "abundant"},
+        "poultry_farming": {"market_score": 71, "risk_severity": 42, "confidence": "medium", "demand_level": "moderate", "competitor_count": 10, "competitor_density": "high", "avg_selling_price": 120, "seasonal_notes": "Strict peri-urban zoning rules; high poultry wholesale off-take.", "input_availability": "abundant"},
+        "goat_farming": {"market_score": 67, "risk_severity": 44, "confidence": "medium", "demand_level": "moderate", "competitor_count": 5, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Grazing land is scarce; requires stall-fed intensive setup.", "input_availability": "moderate"},
+        "mobile_repair": {"market_score": 81, "risk_severity": 27, "confidence": "high", "demand_level": "high", "competitor_count": 11, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Dense smartphone adoption across semi-urban clusters.", "input_availability": "abundant"},
+        "flour_spice_mill": {"market_score": 70, "risk_severity": 38, "confidence": "medium", "demand_level": "moderate", "competitor_count": 8, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Urban customers prefer pre-packaged flour, but fresh grinding retains loyal base.", "input_availability": "abundant"},
+        "tiffin_food_stall": {"market_score": 84, "risk_severity": 25, "confidence": "high", "demand_level": "high", "competitor_count": 12, "competitor_density": "high", "avg_selling_price": 85, "seasonal_notes": "High demand from industrial shifts and college students.", "input_availability": "abundant"},
+        "mushroom_farming": {"market_score": 79, "risk_severity": 32, "confidence": "high", "demand_level": "high", "competitor_count": 4, "competitor_density": "low", "avg_selling_price": 160, "seasonal_notes": "Direct access to Pune organic markets and supermarket distributors.", "input_availability": "abundant"},
+        "csc_eseva_center": {"market_score": 77, "risk_severity": 29, "confidence": "medium", "demand_level": "high", "competitor_count": 8, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Steady demand for Aadhaar, land record extracts (7/12) and PAN.", "input_availability": "abundant"}
+      }
+    },
+    "ahmednagar": {
+      "price_factor": 0.98,
+      "population_band": "rural agricultural heartland (district pop ~4.5M)",
+      "nearest_market": "Sangamner & Shrirampur Mandi",
+      "distance_km": 12.0,
+      "businesses": {
+        "dairy_small": {"market_score": 75, "risk_severity": 34, "confidence": "high", "demand_level": "high", "competitor_count": 9, "competitor_density": "medium", "avg_selling_price": 47, "seasonal_notes": "Well-established milk cooperatives and chilling collection infrastructure.", "input_availability": "abundant"},
+        "kirana_store": {"market_score": 62, "risk_severity": 43, "confidence": "medium", "demand_level": "moderate", "competitor_count": 10, "competitor_density": "medium", "avg_selling_price": 1, "seasonal_notes": "Credit cycles linked to sugarcane harvest payouts.", "input_availability": "abundant"},
+        "tailoring": {"market_score": 66, "risk_severity": 38, "confidence": "medium", "demand_level": "moderate", "competitor_count": 5, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Village tailoring demand peaks around Ganeshotsav and Diwali.", "input_availability": "moderate"},
+        "poultry_farming": {"market_score": 73, "risk_severity": 36, "confidence": "medium", "demand_level": "moderate", "competitor_count": 6, "competitor_density": "medium", "avg_selling_price": 110, "seasonal_notes": "Contract farming integrations available with poultry integrators.", "input_availability": "abundant"},
+        "goat_farming": {"market_score": 82, "risk_severity": 25, "confidence": "high", "demand_level": "high", "competitor_count": 3, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Semi-arid climate and fodder bushes ideal for Osmanabadi goats.", "input_availability": "abundant"},
+        "mobile_repair": {"market_score": 68, "risk_severity": 37, "confidence": "medium", "demand_level": "moderate", "competitor_count": 4, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Spare parts sourced weekly from Pune/Nashik wholesalers.", "input_availability": "moderate"},
+        "flour_spice_mill": {"market_score": 79, "risk_severity": 27, "confidence": "high", "demand_level": "high", "competitor_count": 3, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "Essential rural service; steady daily power availability crucial.", "input_availability": "abundant"},
+        "tiffin_food_stall": {"market_score": 64, "risk_severity": 41, "confidence": "medium", "demand_level": "moderate", "competitor_count": 5, "competitor_density": "medium", "avg_selling_price": 65, "seasonal_notes": "Concentrated around bus stands and tehsil offices.", "input_availability": "abundant"},
+        "mushroom_farming": {"market_score": 69, "risk_severity": 42, "confidence": "approximate", "demand_level": "growing", "competitor_count": 1, "competitor_density": "low", "avg_selling_price": 135, "seasonal_notes": "Emerging demand; requires local market education for direct retail.", "input_availability": "moderate"},
+        "csc_eseva_center": {"market_score": 83, "risk_severity": 23, "confidence": "high", "demand_level": "high", "competitor_count": 2, "competitor_density": "low", "avg_selling_price": 1, "seasonal_notes": "High demand for crop loan waiver submissions, PM-KISAN, and ration cards.", "input_availability": "abundant"}
+      }
+    }
+  },
+  "fallback": {
+    "price_factor": 1.0,
+    "market_score": 60,
+    "risk_severity": 45,
+    "confidence": "approximate",
+    "demand_level": "moderate",
+    "competitor_count": 5,
+    "competitor_density": "medium",
+    "avg_selling_price": 100,
+    "seasonal_notes": "Indicative seasonal cycle derived from statewide rural averages.",
+    "input_availability": "moderate"
+  }
+}

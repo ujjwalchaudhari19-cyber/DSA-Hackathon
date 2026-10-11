@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-size: 8pt;
+        color: #718096;
+      }
+    }
+    body {
+      font-family: "Noto Sans Devanagari", "Mukta", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1a202c;
+      font-size: 10pt;
+      line-height: 1.5;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      border-bottom: 2px solid #0b6e4f;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .brand {
+      font-size: 20pt;
+      font-weight: 700;
+      color: #0b6e4f;
+      margin: 0;
+    }
+    .tagline {
+      font-size: 9pt;
+      color: #4a5568;
+      margin-top: 2px;
+    }
+    .report-title {
+      font-size: 14pt;
+      font-weight: 600;
+      color: #2d3748;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+    .metadata-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8.5pt;
+      color: #718096;
+      margin-bottom: 16px;
+    }
+    .card-grid {
+      margin-bottom: 20px;
+    }
+    .kpi-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+    }
+    .kpi-cell {
+      border: 1px solid #e2e8f0;
+      background-color: #f7fafc;
+      padding: 10px 12px;
+      text-align: center;
+      width: 25%;
+    }
+    .kpi-label {
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+    .kpi-value {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0b6e4f;
+    }
+    .section {
+      margin-bottom: 18px;
+      page-break-inside: avoid;
+    }
+    .section-title {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #0b6e4f;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+    .section-content {
+      font-size: 9.5pt;
+      color: #2d3748;
+      white-space: pre-wrap;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 9pt;
+    }
+    table.data-table th, table.data-table td {
+      border: 1px solid #cbd5e0;
+      padding: 6px 8px;
+      text-align: left;
+    }
+    table.data-table th {
+      background-color: #edf2f7;
+      font-weight: 600;
+      color: #4a5568;
+    }
+    .footer {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 7.5pt;
+      color: #a0aec0;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 8.5pt;
+      background-color: #c6f6d5;
+      color: #22543d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand">GramUdyam AI</div>
+    <div class="tagline">ग्रामीण उद्योजकता व्यवहार्यता आणि वित्त नियोजक (Rural Feasibility & Finance Planner)</div>
+    <div class="report-title">{{ title }}</div>
+    <div class="metadata-bar">
+      <span>Generated on: {{ generated_at }}</span>
+      <span>Status: Certified Prototype Simulation</span>
+    </div>
+  </div>
+
+  {% if kpis %}
+  <table class="kpi-table">
+    <tr>
+      {% for kpi in kpis %}
+      <td class="kpi-cell">
+        <div class="kpi-label">{{ kpi.label }}</div>
+        <div class="kpi-value">{{ kpi.value }}</div>
+      </td>
+      {% endfor %}
+    </tr>
+  </table>
+  {% endif %}
+
+  {% for section in sections %}
+  <div class="section">
+    <div class="section-title">{{ section.title }}</div>
+    <div class="section-content">{{ section.content }}</div>
+  </div>
+  {% endfor %}
+
+  <div class="footer">
+    GramUdyam AI · Guidance & planning prototype only. Final scheme sanction and credit appraisal are subject to official guidelines and bank underwriting discretion.
+  </div>
+
+</body>
+</html>
+

@@ -1,0 +1,70 @@
+{
+  "source": "Prototype base checklist compiled from MSME Udyam, FSSAI, Shops & Establishment Act, and standard bank loan appraisal checklists.",
+  "last_verified": "2026-10-11",
+  "lists": {
+    "food_agri": {
+      "registration": [
+        {"name": "Udyam Registration", "why": "Free national MSME registration giving official micro-enterprise recognition, priority sector status, and eligibility for interest subsidies.", "where": "Official portal: udyamregistration.gov.in", "approx_time": "Immediate (instant certificate)", "approx_cost": "Nil (Government portal is free)"},
+        {"name": "FSSAI Basic Registration / Food Licence", "why": "Mandatory statutory food safety compliance for dairy, food stalls, tiffin services, and agri-processing.", "where": "FoSCoS portal (foscos.fssai.gov.in)", "approx_time": "7–14 working days", "approx_cost": "₹100/year for petty food businesses"},
+        {"name": "Gram Panchayat No Objection Certificate (NOC)", "why": "Confirms village permission for commercial animal sheds, processing units, or retail stall operations.", "where": "Local Gram Panchayat office / Gram Sevak", "approx_time": "3–7 days", "approx_cost": "₹100–₹500 as per panchayat resolution"}
+      ],
+      "loan": [
+        {"name": "KYC (Aadhaar Card & PAN Card)", "why": "Primary identity, address verification, and tax identification required by RBI KYC guidelines.", "where": "Keep physical copies & Aadhaar-linked phone for OTP authentication", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Bank Account Statements (Past 6 months)", "why": "Demonstrates prior banking discipline, cash turnover, and average daily ledger balance to the lending branch manager.", "where": "Home branch or mobile/internet banking PDF download", "approx_time": "Same day", "approx_cost": "Nil to ₹50"},
+        {"name": "Quotation for Machinery / Cattle / Shed Work", "why": "Direct lender requirement for disbursing term loans directly to verified suppliers or equipment vendors.", "where": "Authorised local equipment dealer, dairy cooperative, or registered fabricator", "approx_time": "1–3 days", "approx_cost": "Nil"},
+        {"name": "Land Records / Shed Lease Agreement (7/12 Extract or 8A)", "why": "Proves lawful occupation of the shed, grazing land, or unit location in rural areas.", "where": "Mahabhumi portal (MahaDBT) or Talathi office", "approx_time": "Instant online or 1–2 days", "approx_cost": "₹15–₹50"}
+      ]
+    },
+    "retail": {
+      "registration": [
+        {"name": "Udyam Registration", "why": "Official recognition as a retail micro-enterprise under revised MSME notification (NIC code 47).", "where": "Official portal: udyamregistration.gov.in", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Shop & Establishment Act Registration (Gumasta)", "why": "Regulates retail work hours, employee terms, and serves as formal trade proof for bank current account opening.", "where": "Aaple Sarkar / Municipal council or Gram Panchayat trade register", "approx_time": "2–5 working days", "approx_cost": "₹200–₹1,000 depending on worker count"},
+        {"name": "GST Registration (Optional / Threshold based)", "why": "Required if turnover exceeds ₹40 Lakhs for goods, or for inter-state wholesale procurement.", "where": "gst.gov.in", "approx_time": "3–7 days", "approx_cost": "Nil (self) or ₹500–₹1,500 CA assistance"}
+      ],
+      "loan": [
+        {"name": "KYC Identity & Residence Proof", "why": "Mandatory lender verification of borrower identity and residential stability.", "where": "Aadhaar Card, Voter ID, PAN Card", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Shop Rent Agreement & Utility Bill", "why": "Verifies physical business address, commercial tenure, and electricity load availability.", "where": "Registered rent agreement with landlord + recent power bill", "approx_time": "1–2 days", "approx_cost": "₹500–₹1,500 stamp duty/notary"},
+        {"name": "Provisional Stock & Furniture Quotations", "why": "Substantiates working capital and fixtures loan components under Mudra or PMEGP.", "where": "Wholesale distributor or fixtures carpenter invoice estimate", "approx_time": "1–2 days", "approx_cost": "Nil"},
+        {"name": "6 Months Savings / Current Bank Statements", "why": "Verifies cash velocity and past financial integrity.", "where": "Bank branch or net banking", "approx_time": "Immediate", "approx_cost": "Nil"}
+      ]
+    },
+    "services": {
+      "registration": [
+        {"name": "Udyam Registration", "why": "Certifies enterprise under services category for priority sector micro-lending benefits.", "where": "udyamregistration.gov.in", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Local Body Trade Licence / Gumasta", "why": "Permissions from local authority for running a commercial service workshop or boutique.", "where": "Municipal council or Gram Panchayat", "approx_time": "3–7 days", "approx_cost": "₹250–₹750"}
+      ],
+      "loan": [
+        {"name": "KYC (Aadhaar & PAN)", "why": "Mandatory lender KYC documentation.", "where": "Self documents", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Equipment / Machine Quotation", "why": "Proves cost of sewing machines, cutting tables, diagnostic tools, or repair workstations.", "where": "Authorized equipment dealer or authorized brand dealer", "approx_time": "1–2 days", "approx_cost": "Nil"},
+        {"name": "Premises Proof (Ownership or Rent Agreement)", "why": "Validates business workshop location.", "where": "Registered rent deed or municipal tax receipt", "approx_time": "1–3 days", "approx_cost": "₹300–₹1,000"},
+        {"name": "Skill / Experience Certificate (Optional but Recommended)", "why": "Significantly strengthens appraisal for technical trades like tailoring, mobile repair, or IT services.", "where": "ITI, PMKVY, vocational diploma, or self-attested portfolio", "approx_time": "Self-provided", "approx_cost": "Nil"}
+      ]
+    },
+    "manufacturing": {
+      "registration": [
+        {"name": "Udyam Registration (Manufacturing)", "why": "Primary proof of manufacturing micro-enterprise under MSME Act; unlocks PMEGP/CMEGP subsidies.", "where": "udyamregistration.gov.in", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Factory / Power NOC & Commercial Electric Connection", "why": "Secures three-phase commercial electricity power supply for mills and heavy motor machinery.", "where": "MSEDCL (Mahavitaran) or state distribution discom", "approx_time": "10–20 days", "approx_cost": "Tariff security deposit (approx ₹5,000–₹15,000)"},
+        {"name": "Pollution Control Board Consent to Establish / Operate (Green Category)", "why": "Statutory environmental compliance for grain milling and spice pulverising units.", "where": "State Pollution Control Board portal (MPCB / CTE-CTO)", "approx_time": "7–15 days", "approx_cost": "₹1,000–₹3,000 for green category micro units"}
+      ],
+      "loan": [
+        {"name": "Detailed Project Report (DPR)", "why": "Comprehensive technical and financial project report showing break-even, capacity utilisation, and DSCR for bankers.", "where": "Chartered Accountant, DIC facilitation desk, or GramUdyam AI report", "approx_time": "2–5 days", "approx_cost": "₹1,000–₹3,000 if done via external consultant; free via GramUdyam"},
+        {"name": "Machinery Quotations with GST & Performance Warranty", "why": "Banks mandate minimum 2 competitive quotations from registered machinery manufacturers.", "where": "Agri-machinery / pulveriser manufacturers", "approx_time": "2–4 days", "approx_cost": "Nil"},
+        {"name": "Premise Title Deed / 5-Year Registered Lease Deed", "why": "Protects bank against premature tenant eviction affecting factory machinery hypothecation.", "where": "Sub-registrar office", "approx_time": "3–7 days", "approx_cost": "Stamp duty & registration fees (approx ₹2,000–₹5,000)"},
+        {"name": "Bank Statements (12 Months)", "why": "Assesses financial health and past credit transactions.", "where": "Lending bank", "approx_time": "Immediate", "approx_cost": "Nil"}
+      ]
+    },
+    "tech_csc": {
+      "registration": [
+        {"name": "CSC VLE (Village Level Entrepreneur) Registration", "why": "Authorized certification to provide government G2C and B2C digital citizen services.", "where": "register.csc.gov.in with TEC (Telecentre Entrepreneur Course) certification", "approx_time": "15–30 days", "approx_cost": "TEC exam fee approx ₹1,479"},
+        {"name": "Udyam Registration", "why": "Recognition as a technology and IT-enabled micro-service provider.", "where": "udyamregistration.gov.in", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Police Verification Character Certificate", "why": "Mandated for handling Aadhaar authentication, banking correspondent (BC) points, and citizen identity data.", "where": "Local Police Station / State Police Citizen Portal", "approx_time": "7–14 days", "approx_cost": "₹100–₹250"}
+      ],
+      "loan": [
+        {"name": "KYC (Aadhaar & PAN)", "why": "Lender identity proof and digital signatory validation.", "where": "Self documents", "approx_time": "Immediate", "approx_cost": "Nil"},
+        {"name": "Hardware Invoice Quotation (Computers, Laser Printers, Biometric Scanners)", "why": "Itemized pro-forma invoice for hardware asset financing.", "where": "Authorized IT hardware distributor / computer store", "approx_time": "1–2 days", "approx_cost": "Nil"},
+        {"name": "Shop Rent Agreement or Panchayat Allotment Letter", "why": "Proof of accessible central village location with high public visibility.", "where": "Gram Panchayat or private shop owner", "approx_time": "1–3 days", "approx_cost": "₹300–₹1,000"},
+        {"name": "Educational Certificates & Computer Literacy Certificate (MS-CIT/Diploma)", "why": "Validates operator capability to operate government portals and citizen applications.", "where": "MKCL / recognized board certificate", "approx_time": "Self-provided", "approx_cost": "Nil"}
+      ]
+    }
+  }
+}

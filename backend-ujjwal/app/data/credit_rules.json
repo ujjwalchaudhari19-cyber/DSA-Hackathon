@@ -1,0 +1,12 @@
+{
+  "source": "Prototype education-only credit-readiness rules; not a credit bureau, loan decision, or financial advice.",
+  "last_verified": "2026-10-11",
+  "what_lenders_check": ["Repayment history", "Cash flow and ability to repay", "Identity and address documents", "Banking and business records"],
+  "alternatives": ["SHG-bank linkage route", "Eligible co-applicant", "Reduce initial scale", "Discuss microfinance options and total borrowing cost"],
+  "actions": {
+    "strong": ["30 days: retain bank statements and invoices.", "60 days: compare lender terms, including all charges.", "90 days: prepare a simple cash-flow record."],
+    "fair": ["30 days: pay every existing obligation on time.", "60 days: avoid unnecessary new credit applications.", "90 days: maintain regular banking records."],
+    "thin_file": ["30 days: open or actively use a bank account for business cash flows.", "60 days: keep invoices and income records.", "90 days: explore SHG or co-applicant routes if appropriate."],
+    "needs_repair": ["30 days: review and clear overdue amounts where possible.", "60 days: maintain on-time payments consistently.", "90 days: obtain guidance before taking additional debt."]
+  }
+}

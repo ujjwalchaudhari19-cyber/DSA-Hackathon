@@ -1,63 +1,47 @@
-import logging
+from typing import Annotated
 
-from fastapi import APIRouter
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Depends, Header, HTTPException, Path
+from fastapi.responses import Response
 
-from app.errors import AppError
-from app.services.report_service import report_service
+from app.models.database import get_report
+from app.services.pdf_service import PdfRenderingUnavailable, render_report_pdf
+from app.utils.auth import get_current_user
+from app.models.database import User
 
-logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/report", tags=["Report PDF"])
+router = APIRouter(prefix="/api/v1/report", tags=["report export"])
 
-class PDFUnavailable(AppError):
-    status = 501
-    code = "PDF_UNAVAILABLE"
-    def __init__(self):
-        super().__init__("Use your browser's Print to save as PDF.")
 
 @router.get("/{report_id}/pdf")
-def render_report_pdf(report_id: str):
-    """Render saved report to PDF using WeasyPrint with graceful fallback."""
+def report_pdf(
+    report_id: Annotated[str, Path(min_length=1)],
+    authorization: Annotated[str | None, Header()] = None,
+) -> Response:
+    # If authorization header is present, enforce ownership
+    user_id = None
+    if authorization:
+        # Resolve user
+        try:
+            from app.models.database import Session, engine
+            with Session(engine) as session:
+                user = get_current_user(authorization=authorization, db=session)
+                user_id = user.id
+        except Exception as exc:
+            # Re-raise auth HTTPException
+            if isinstance(exc, HTTPException):
+                raise exc
+            raise HTTPException(status_code=401, detail="Invalid authorization token")
+
+    report = get_report(report_id, user_id=user_id)
+    if report is None:
+        raise HTTPException(status_code=404, detail="Report not found")
+
     try:
-        import weasyprint  # lazy import
-    except ImportError:
-        logger.info("WeasyPrint is not installed in the current environment.")
-        raise PDFUnavailable()
-    except Exception as e:
-        logger.warning("WeasyPrint load error: %s", e)
-        raise PDFUnavailable()
+        content = render_report_pdf(report)
+    except PdfRenderingUnavailable as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
-    # In production, render jinja2 html template -> weasyprint
-    raise PDFUnavailable()
-
-@router.get("/{report_id}/print", response_class=HTMLResponse)
-async def render_report_print_view(report_id: str):
-    """HTML print view for browser fallback."""
-    report = await report_service.get(report_id)
-    title = f"GramUdyam Feasibility Report - {report_id[:8]}" if report else "Report Print View"
-    html_content = f"""<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>{title}</title>
-    <style>
-        body {{ font-family: 'Noto Sans', sans-serif; margin: 40px; color: #222; }}
-        h1 {{ color: #166534; }}
-        .box {{ border: 1px solid #ccc; padding: 15px; border-radius: 8px; margin-bottom: 20px; }}
-        @media print {{
-            body {{ margin: 0; }}
-            .no-print {{ display: none; }}
-        }}
-    </style>
-</head>
-<body>
-    <button class="no-print" onclick="window.print()">Print Report / Save as PDF</button>
-    <h1>GramUdyam AI - Feasibility Report</h1>
-    <div class="box">
-        <p><strong>Report ID:</strong> {report_id}</p>
-        <p>This report can be printed directly using your browser's print dialogue (Ctrl+P / Cmd+P).</p>
-    </div>
-</body>
-</html>"""
-    return HTMLResponse(content=html_content)
-
+    return Response(
+        content=content,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="gramudyam-report-{report_id}.pdf"'},
+    )
