@@ -1,1 +1,0 @@
-"""GramUdyam backend package."""

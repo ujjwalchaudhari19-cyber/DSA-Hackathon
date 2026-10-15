@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.db
+*.db-shm
+*.db-wal
+.env
+.pytest_cache/
+tests/
+*.json.secret
+*firebase*.json

@@ -1,0 +1,9 @@
+@media print {
+  @page { margin: 12mm; size: A4 portrait; }
+  nav, header, footer:not(.report-card), .stepper, [data-stepper], [data-advisor-button], .floating-advisor, .report-header button { display: none !important; }
+  body, #root, .report-page { background: #fff !important; color: #111 !important; }
+  .report-page { max-width: none !important; padding: 0 !important; }
+  .report-card, .report-page article, .report-page table { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; }
+  .report-page > :first-child { margin-top: 0 !important; }
+  .report-page > :last-child { margin-bottom: 0 !important; }
+}

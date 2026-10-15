@@ -94,3 +94,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Stale duplicate backend folder (locked by OS; ignore from git)
+backend-ujjwal/
+
+
+# SQLite WAL sidecar files
+*.db-shm
+*.db-wal
